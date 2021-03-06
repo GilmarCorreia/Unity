@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class ManageCartas : MonoBehaviour
 {
     public GameObject carta; // A carta a ser descartada
-    private bool primeiraCartaSelecionada, segundaCartaSelecionada; // indicadores para cada carta escolhida em cada linha
-    private GameObject carta1, carta2; // gameObjects da 1 e 2 carta selecionada
-    private string linhaCarta1, linhaCarta2; // linha da carta selecionada
+    private bool primeiraCartaSelecionada, segundaCartaSelecionada, terceiraCartaSelecionada, quartaCartaSelecionada; // indicadores para cada carta escolhida em cada linha
+    private GameObject carta1, carta2, carta3, carta4; // gameObjects das cartas selecionadas
+    private string linhaCarta1, linhaCarta2, linhaCarta3, linhaCarta4; // linha da carta selecionada
 
     bool timerPausado, timerAcionado; // indicador de pausa no Timer ou Start Timer
     float timer; // variável de tempo
@@ -23,6 +23,10 @@ public class ManageCartas : MonoBehaviour
 
     int ultimoJogo = 0; // Quantas tentativas foram feitas no último jogo
     int recorde = 100; // Menor número de tentativas de todos os jogos
+
+    int[] randomNaipes; // Vetor de naipes randomicos
+    int[] linhaSelecionada = { -1, -1, -1, -1}; //Guarda no vetor a linha atual selecionada
+    int countLinha = 0;
 
     bool jogoTerminado = false;
 
@@ -56,7 +60,7 @@ public class ManageCartas : MonoBehaviour
         int minutos = segundos / 60;
         int mili = ((int) ((tempoAtual - initialTime) * 1000.0f)) - (segundos*1000) ;
 
-        GameObject.Find("tempo").GetComponent<Text>().text = minutos.ToString("00") + ":" + segundos.ToString("00") + ":" + mili.ToString("000");
+        GameObject.Find("tempo").GetComponent<Text>().text = minutos.ToString("00") + ":" + segundos.ToString("00") + ":" + mili.ToString("000"); // Converte o número para uma string personalizada
 
         if (timerAcionado)
         {
@@ -68,60 +72,107 @@ public class ManageCartas : MonoBehaviour
                 timerPausado = true;
                 timerAcionado = false;
 
-                if(carta1.tag == carta2.tag)
+                bool cartasIguais = (carta1.tag == carta2.tag) && (carta1.tag == carta3.tag) && (carta1.tag == carta4.tag); // Verifica se todas as 4 cartas selecionadas são iguais
+
+                if(cartasIguais)
                 {
                     Destroy(carta1);
                     Destroy(carta2);
+                    Destroy(carta3);
+                    Destroy(carta4);
                     numAcertos++;
                     somOK.Play();
 
                     if (numAcertos == 13)
                     {
                         PlayerPrefs.SetInt("Jogadas", numTentativas);
-                        
-                        if(numTentativas < recorde)
-                            PlayerPrefs.SetInt("Recorde", numTentativas);
 
-
-                        long tempoTotal = (minutos * 60 * 1000) + (segundos * 1000) + mili;
-                        long tempoRecordeTotal = (tempoRecorde[0] * 60 * 1000) + (tempoRecorde[1] * 1000) + tempoRecorde[2];
-
-                        if (tempoTotal < tempoRecordeTotal)
+                        // Verifica se o número de tentativas é menor que o número recorde
+                        if (numTentativas < recorde)
                         {
-                           PlayerPrefs.SetInt("TempoRecordeMinutos", minutos);
-                           PlayerPrefs.SetInt("TempoRecordeSegundo", segundos);
-                           PlayerPrefs.SetInt("TempoRecordeMilis", mili);
+                            PlayerPrefs.SetInt("Recorde", numTentativas); // salva o novo valor caso seja inferior ao recorde
+
+                            VerificaTempoRecorde(minutos, segundos, mili, numTentativas);
+
+                            SceneManager.LoadScene("congratulations"); // carrega a tela de congratulações
                         }
 
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                        VerificaTempoRecorde(minutos, segundos, mili, numTentativas);
+
+                        SceneManager.LoadScene("credits");
                     }
+
+                    for(int i = 0; i < 4; i++)
+                        linhaSelecionada[i] = -1;
+
+                    countLinha = 0;
                 }
                 else
                 {
                     carta1.GetComponent<Tile>().EscondeCarta();
                     carta2.GetComponent<Tile>().EscondeCarta();
+                    carta3.GetComponent<Tile>().EscondeCarta();
+                    carta4.GetComponent<Tile>().EscondeCarta();
+
+                    for (int i = 0; i < 4; i++)
+                        linhaSelecionada[i] = -1;
+
+                    countLinha = 0;
                 }
 
                 primeiraCartaSelecionada = false;
                 segundaCartaSelecionada = false;
+                terceiraCartaSelecionada = false;
+                quartaCartaSelecionada = false;
                 carta1 = null;
                 carta2 = null;
+                carta3 = null;
+                carta4 = null;
                 linhaCarta1 = "";
                 linhaCarta2 = "";
+                linhaCarta3 = "";
+                linhaCarta4 = "";
                 timer = 0;
             }
         }
     }
 
+
+    // Método que salva o tempo recorde e o numTentativas recorde
+    void VerificaTempoRecorde(int minutos,int segundos,int mili, int numTentativas)
+    {
+
+        PlayerPrefs.SetInt("Recorde", numTentativas);
+
+        long tempoTotal = (minutos * 60 * 1000) + (segundos * 1000) + mili; // Caso tenha acabado o jogo computa o tempoTotal da jogada
+        long tempoRecordeTotal = (tempoRecorde[0] * 60 * 1000) + (tempoRecorde[1] * 1000) + tempoRecorde[2]; // Pega o tempo recorde e converte em milissegundos
+
+        // Verifica se o tempo da jogada é menor que o tempo recorde, se sim, o novo tempo é salvo
+        if (tempoTotal < tempoRecordeTotal)
+        {
+            PlayerPrefs.SetInt("TempoRecordeMinutos", minutos); // salva o tempo recorde em minutos
+            PlayerPrefs.SetInt("TempoRecordeSegundo", segundos); // salva o tempo recorde em segundos
+            PlayerPrefs.SetInt("TempoRecordeMilis", mili); // salva o tempo recorde em milissegundos
+
+            SceneManager.LoadScene("congratulations"); // carrega a tela de congratulações
+        }
+    }
+
     void MostraCartas()
     {
+        randomNaipes = CriaNaipesRandomicos();
+
         int[] arrayEmbaralhado = CriaArrayEmbaralhado();
         int[] arrayEmbaralhado2 = CriaArrayEmbaralhado();
+        int[] arrayEmbaralhado3 = CriaArrayEmbaralhado(); // Cria o array embaralhado para a terceira linha
+        int[] arrayEmbaralhado4 = CriaArrayEmbaralhado(); // Cria o array embaralhado para a quarta linha
 
         for (int i = 0; i < 13; i++)
         {
-            AddUmaCarta(0,i, arrayEmbaralhado[i]);
+            AddUmaCarta(0, i, arrayEmbaralhado[i]);
             AddUmaCarta(1, i, arrayEmbaralhado2[i]);
+            AddUmaCarta(2, i, arrayEmbaralhado3[i]); // adiciona cartas na linha 3
+            AddUmaCarta(3, i, arrayEmbaralhado4[i]); // adiciona cartas na linha 4
         }
     }
 
@@ -133,7 +184,7 @@ public class ManageCartas : MonoBehaviour
         float fatorEscalaY = ((945 * escalaCartaOriginal) / 110.0f);
 
         Vector3 novaPosicao = new Vector3(centro.transform.position.x + ((rank - 13/2) * fatorEscalaX),
-                                          centro.transform.position.y + ((linha - 1.0f/2.0f) * fatorEscalaY),
+                                          centro.transform.position.y + ((linha - 2) * fatorEscalaY),
                                           centro.transform.position.z);
 
         GameObject c = (GameObject)(Instantiate(carta, novaPosicao, Quaternion.identity));
@@ -156,15 +207,50 @@ public class ManageCartas : MonoBehaviour
             numeroCarta = "" + (valor + 1);
 
         // Incluindo linhas com diferentes naipes
-        if(linha == 0)
-            nomeDaCarta = numeroCarta + "_of_clubs";
-        else if(linha == 1)
-            nomeDaCarta = numeroCarta + "_of_diamonds";
+        for (int i = 0; i < 4; i++)
+        {
+            int naipe = randomNaipes[linha];
+            if (naipe == 0)
+                nomeDaCarta = numeroCarta + "_of_clubs";
+            else if (naipe == 1)
+                nomeDaCarta = numeroCarta + "_of_diamonds";
+            else if (naipe == 2)
+                nomeDaCarta = numeroCarta + "_of_spades";
+            else if (naipe == 3)
+                nomeDaCarta = numeroCarta + "_of_hearts";
+        }
+
+        
 
         Sprite s1 = (Sprite) (Resources.Load<Sprite>(nomeDaCarta));
 
         //print("S1: " + s1);
         GameObject.Find("" + linha + "_" + valor).GetComponent<Tile>().SetCartaOriginal(s1);
+
+    }
+
+    // Função que cria randomicamente qual naípe será escolhido para cada linha
+    public int[] CriaNaipesRandomicos()
+    {
+        int escolha = UnityEngine.Random.Range(0, 8);
+
+        // listando todas as possibilidades
+        if(escolha == 0)
+            return new int[] { 0, 1, 2, 3 };
+        else if (escolha == 1)
+            return new int[] { 0, 3, 2, 1 };
+        else if (escolha == 2)
+            return new int[] { 2, 3, 0, 1 };
+        else if (escolha == 2)
+            return new int[] { 2, 1, 0, 3 };
+        else if (escolha == 4)
+            return new int[] { 3, 0, 1, 2};
+        else if (escolha == 5)
+            return new int[] { 1, 0, 3, 2 };
+        else if (escolha == 6)
+            return new int[] { 1, 2, 3, 0 };
+        else
+            return new int[] { 3, 2, 1, 0 };
 
     }
 
@@ -187,28 +273,121 @@ public class ManageCartas : MonoBehaviour
 
     public void CartaSelecionada(GameObject carta)
     {
+
+
         if (!primeiraCartaSelecionada)
         {
 
-            string linha = carta.name.Substring(0,1);
-            linhaCarta1 = linha;
+            string linha = carta.name.Substring(0, 1);
 
-            primeiraCartaSelecionada = true;
-            carta1 = carta;
-            carta1.GetComponent<Tile>().RevelaCarta();
+            // Método para verificar se é possível adicionar a carta a linha selecionada
+            int linhaClicada = int.Parse(linha);
+            bool podeAdicionar = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (linhaClicada == linhaSelecionada[i])
+                    podeAdicionar = false;
+            }
+
+            // Se a linha da carta não tiver sido clicado, revela a carta
+            if (podeAdicionar)
+            {
+                linhaSelecionada[countLinha] = linhaClicada;
+                countLinha++;
+
+                linhaCarta1 = linha;
+
+                primeiraCartaSelecionada = true;
+                carta1 = carta;
+                carta1.GetComponent<Tile>().RevelaCarta();
+            }
+
 
 
         }
-        else if(primeiraCartaSelecionada && !segundaCartaSelecionada)
+        else if (primeiraCartaSelecionada && !segundaCartaSelecionada)
         {
             string linha = carta.name.Substring(0, 1);
-            linhaCarta2 = linha;
+            // Método para verificar se é possível adicionar a carta a linha selecionada
+            int linhaClicada = int.Parse(linha);
+            bool podeAdicionar = true;
 
-            segundaCartaSelecionada = true;
-            carta2 = carta;
-            carta2.GetComponent<Tile>().RevelaCarta();
+            for (int i = 0; i < 4; i++)
+            {
+                if (linhaClicada == linhaSelecionada[i])
+                    podeAdicionar = false;
+            }
 
-            VerificaCartas();
+            // Se a linha da carta não tiver sido clicado, revela a carta
+            if (podeAdicionar)
+            {
+                linhaSelecionada[countLinha] = linhaClicada;
+                countLinha++;
+                linhaCarta2 = linha;
+
+                segundaCartaSelecionada = true;
+                carta2 = carta;
+                carta2.GetComponent<Tile>().RevelaCarta();
+            }
+
+        }
+        else if (primeiraCartaSelecionada && segundaCartaSelecionada && !terceiraCartaSelecionada)
+        {
+            string linha = carta.name.Substring(0, 1);
+
+            // Método para verificar se é possível adicionar a carta a linha selecionada
+            int linhaClicada = int.Parse(linha);
+            bool podeAdicionar = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (linhaClicada == linhaSelecionada[i])
+                    podeAdicionar = false;
+            }
+
+            // Se a linha da carta não tiver sido clicado, revela a carta
+            if (podeAdicionar)
+            {
+                linhaSelecionada[countLinha] = linhaClicada;
+                countLinha++;
+
+                linhaCarta3 = linha;
+
+                terceiraCartaSelecionada = true;
+                carta3 = carta;
+                carta3.GetComponent<Tile>().RevelaCarta();
+            }
+
+        }
+
+        else if (primeiraCartaSelecionada && segundaCartaSelecionada && terceiraCartaSelecionada && !quartaCartaSelecionada)
+        {
+            string linha = carta.name.Substring(0, 1);
+            // Método para verificar se é possível adicionar a carta a linha selecionada
+            int linhaClicada = int.Parse(linha);
+            bool podeAdicionar = true;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (linhaClicada == linhaSelecionada[i])
+                    podeAdicionar = false;
+            }
+
+            // Se a linha da carta não tiver sido clicado, revela a carta
+            if (podeAdicionar)
+            {
+                linhaSelecionada[countLinha] = linhaClicada;
+                countLinha++;
+
+                linhaCarta4 = linha;
+
+                quartaCartaSelecionada = true;
+                carta4 = carta;
+                carta4.GetComponent<Tile>().RevelaCarta();
+
+                VerificaCartas();
+            }
         }
     }
 
