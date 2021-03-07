@@ -16,7 +16,7 @@ public class ManageButtons : MonoBehaviour
     {
 
     }
-
+    
     // Recarrega o jogo
     public void RestartMundoGame()
     {

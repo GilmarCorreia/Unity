@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Congratulacoes : MonoBehaviour
 {
 
-    float tempoAtual;
+    float initialTime,tempoAtual;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,14 +20,15 @@ public class Congratulacoes : MonoBehaviour
 
         GameObject.Find("novoRecorde").GetComponent<Text>().text = "Novo Recorde = " + recorde + " - " + tempoRecorde[0].ToString("00") + ":" + tempoRecorde[1].ToString("00") + ":" + tempoRecorde[2].ToString("000"); // Mostra o recorde do jogo em pontuação e tempo
 
-        tempoAtual = Time.deltaTime; // salva o tempo atual
+        initialTime = Time.deltaTime;
+        tempoAtual = initialTime; // salva o tempo atual
     }
 
     // Update is called once per frame
     void Update()
     {
         tempoAtual += Time.deltaTime;
-        if (tempoAtual > 20)
+        if ((tempoAtual-initialTime) > 20)
         {
             SceneManager.LoadScene("credits");
         }

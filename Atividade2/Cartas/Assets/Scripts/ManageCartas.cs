@@ -37,11 +37,11 @@ public class ManageCartas : MonoBehaviour
         UpdateTentativas();
         somOK = GetComponent<AudioSource>();
         ultimoJogo = PlayerPrefs.GetInt("Jogadas", 0);
-        recorde = PlayerPrefs.GetInt("Recorde", 0); // Pega o recorde do jogo
+        recorde = PlayerPrefs.GetInt("Recorde", 999); // Pega o recorde do jogo
 
-        tempoRecorde[0] = PlayerPrefs.GetInt("TempoRecordeMinutos", 0);
-        tempoRecorde[1] = PlayerPrefs.GetInt("TempoRecordeSegundos", 0);
-        tempoRecorde[2] = PlayerPrefs.GetInt("TempoRecordeMilis", 0); // Salva em um array o tempo recorde em Minutos, Segundos e Milissegundos
+        tempoRecorde[0] = PlayerPrefs.GetInt("TempoRecordeMinutos", 99);
+        tempoRecorde[1] = PlayerPrefs.GetInt("TempoRecordeSegundos", 99);
+        tempoRecorde[2] = PlayerPrefs.GetInt("TempoRecordeMilis", 999); // Salva em um array o tempo recorde em Minutos, Segundos e Milissegundos
 
         GameObject.Find("ultimaJogada").GetComponent<Text>().text = "Jogo Anterior = " + ultimoJogo;
         GameObject.Find("recorde").GetComponent<Text>().text = "Recorde = " + recorde + " - " + tempoRecorde[0].ToString("00")+":"+tempoRecorde[1].ToString("00") + ":"+tempoRecorde[2].ToString("000"); // Mostra o recorde do jogo em pontuação e tempo
@@ -60,7 +60,9 @@ public class ManageCartas : MonoBehaviour
         int minutos = segundos / 60;
         int mili = ((int) ((tempoAtual - initialTime) * 1000.0f)) - (segundos*1000) ;
 
-        GameObject.Find("tempo").GetComponent<Text>().text = minutos.ToString("00") + ":" + segundos.ToString("00") + ":" + mili.ToString("000"); // Converte o número para uma string personalizada
+        int showSegundos = segundos - (minutos*60);
+
+        GameObject.Find("tempo").GetComponent<Text>().text = minutos.ToString("00") + ":" + showSegundos.ToString("00") + ":" + mili.ToString("000"); // Converte o número para uma string personalizada
 
         if (timerAcionado)
         {
@@ -96,10 +98,12 @@ public class ManageCartas : MonoBehaviour
 
                             SceneManager.LoadScene("congratulations"); // carrega a tela de congratulações
                         }
+                        else
+                        {
+                            //VerificaTempoRecorde(minutos, segundos, mili, numTentativas);
 
-                        VerificaTempoRecorde(minutos, segundos, mili, numTentativas);
-
-                        SceneManager.LoadScene("credits");
+                            SceneManager.LoadScene("credits");
+                        }
                     }
 
                     for(int i = 0; i < 4; i++)
@@ -142,14 +146,14 @@ public class ManageCartas : MonoBehaviour
     void VerificaTempoRecorde(int minutos,int segundos,int mili, int numTentativas)
     {
 
-        PlayerPrefs.SetInt("Recorde", numTentativas);
-
         long tempoTotal = (minutos * 60 * 1000) + (segundos * 1000) + mili; // Caso tenha acabado o jogo computa o tempoTotal da jogada
         long tempoRecordeTotal = (tempoRecorde[0] * 60 * 1000) + (tempoRecorde[1] * 1000) + tempoRecorde[2]; // Pega o tempo recorde e converte em milissegundos
 
         // Verifica se o tempo da jogada é menor que o tempo recorde, se sim, o novo tempo é salvo
         if (tempoTotal < tempoRecordeTotal)
         {
+            PlayerPrefs.SetInt("Recorde", numTentativas);
+
             PlayerPrefs.SetInt("TempoRecordeMinutos", minutos); // salva o tempo recorde em minutos
             PlayerPrefs.SetInt("TempoRecordeSegundo", segundos); // salva o tempo recorde em segundos
             PlayerPrefs.SetInt("TempoRecordeMilis", mili); // salva o tempo recorde em milissegundos
