@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ce1f741dbc26442b2ead6bdce5465b, type: 3}
-  m_Name: Coracao
+  m_Name: CristalAmarelo
   m_EditorClassIdentifier: 
-  NomeObjeto: Coracao
-  sprite: {fileID: -8843976880988234773, guid: 023160273188e6a49ae444c19ba28234, type: 3}
+  NomeObjeto: Cristal Amarelo
+  sprite: {fileID: -6156820157840756319, guid: 25db48f673baae646b623b11f19f65e1, type: 3}
   quantidade: 1
-  empilhavel: 0
+  empilhavel: 1
   tipoItem: 1

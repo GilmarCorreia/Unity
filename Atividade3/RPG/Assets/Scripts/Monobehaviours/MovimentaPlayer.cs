@@ -9,10 +9,11 @@ public class MovimentaPlayer : MonoBehaviour
     Vector2 Movimento = new Vector2(); // detectar movimento pelo teclado
 
     Animator animator; // guarda a componente do Controlador de Animação
-    string estadoAnimacao = "EstadoAnimacao"; // Guarda o nome do parâmetro de Animação
+    // string estadoAnimacao = "EstadoAnimacao"; // Guarda o nome do parâmetro de Animação // Desnecessário com a Blend Tree
 
     Rigidbody2D rb2D; // guarda a componente CorpoRígido do Player
 
+    /* Desnecessário pela Blend Tree
     enum EstadosCaractere
     {
         andaLeste = 1,
@@ -21,7 +22,7 @@ public class MovimentaPlayer : MonoBehaviour
         andaSul = 4,
         idle = 5
     }
-
+    */
 
 
     // Start is called before the first frame update
@@ -50,8 +51,10 @@ public class MovimentaPlayer : MonoBehaviour
         rb2D.velocity = Movimento * VelocidadeMovimento;
     }
 
+    /*
     private void UpdateEstado()
     {
+       
         if(Movimento.x > 0)
         {
             animator.SetInteger(estadoAnimacao, (int)EstadosCaractere.andaLeste);
@@ -74,5 +77,20 @@ public class MovimentaPlayer : MonoBehaviour
         }
 
 
+    }
+    */
+
+    void UpdateEstado()
+    {
+        if(Mathf.Approximately(Movimento.x, 0) && (Mathf.Approximately(Movimento.y, 0))){
+            animator.SetBool("Caminhando", false);
+        }
+        else
+        {
+            animator.SetBool("Caminhando", true);
+        }
+
+        animator.SetFloat("dirX", Movimento.x);
+        animator.SetFloat("dirY", -1*Movimento.y);
     }
 }

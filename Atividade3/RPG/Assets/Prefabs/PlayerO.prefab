@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2788229652466083288}
   - component: {fileID: -4737739403052323201}
   - component: {fileID: 2081185269423724835}
+  - component: {fileID: -4453295340702759297}
   m_Layer: 6
   m_Name: PlayerO
   m_TagString: Player
@@ -119,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0036435723, y: -0.0783371}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -130,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5700568, y: 0.8433258}
   m_EdgeRadius: 0
 --- !u!50 &2788229652466083288
 Rigidbody2D:
@@ -178,8 +179,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c69dcbe02ff0a1f41ab7f43d1d1193f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pontosDano: {fileID: 11400000, guid: 2604dc2132f9989418e6c3d013b3e69c, type: 2}
   inicioPontosDano: 6
   MaxPontosDano: 10
   inventarioPrefab: {fileID: -2331870001532685358, guid: 2ace879964231a345af8b78dc1960ccc, type: 3}
   healthBarPrefab: {fileID: 4211503210888483097, guid: 7c2ad481256226e41a4245666fe41756, type: 3}
+  pontosDano: {fileID: 11400000, guid: 2604dc2132f9989418e6c3d013b3e69c, type: 2}
+--- !u!114 &-4453295340702759297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2788229652466083300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23b74bcabc7181c478a2aca3a60b6bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  municaoPrefab: {fileID: 564319509566859782, guid: 5e27b664573648f4d9dfc2d4b232b70e, type: 3}
+  tamanhoPiscina: 7
+  velocidadeArma: 2

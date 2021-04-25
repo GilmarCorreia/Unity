@@ -14,6 +14,7 @@ public class Item : ScriptableObject
     public enum TipoItem
     {
         MOEDA,
+        CRISTAL,
         HEALTH
     }
 
