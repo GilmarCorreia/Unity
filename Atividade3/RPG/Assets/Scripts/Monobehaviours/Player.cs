@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Player : Caractere
 {
     public Inventario inventarioPrefab; // refer�ncia ao objeto prefab criado do invent�rio
@@ -57,6 +57,8 @@ public class Player : Caractere
         base.KillCaractere();
         Destroy(healthBar.gameObject);
         Destroy(inventario.gameObject);
+
+        SceneManager.LoadScene("credits");
     }
 
     public override void ResetCaractere()

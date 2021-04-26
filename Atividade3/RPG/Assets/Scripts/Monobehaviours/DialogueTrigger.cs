@@ -9,19 +9,11 @@ public class DialogueTrigger : MonoBehaviour
     [HideInInspector]
     public static DialogManager dialogManager;
 
-    bool hasStarted = false;
-
-    void Update()
-    {
-
-        if (hasStarted && !DialogManager.dialogueHasEnded)
-        {    
-            Destroy(gameObject);
-        }
+    void Start(){
+        dialogManager = GameObject.Find("DialogManager").GetComponent<DialogManager>();
     }
     public void TriggerDialogue()
     {
-        hasStarted = true;
         dialogManager.StartDialogue(dialogue);        
     }
 }

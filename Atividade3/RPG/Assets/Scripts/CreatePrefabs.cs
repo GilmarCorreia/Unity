@@ -19,6 +19,7 @@ public class CreatePrefabs : MonoBehaviour
         PlayerPrefs.SetInt("cristaisVerdes", 0);
         PlayerPrefs.SetInt("cristaisAmarelos", 0);
         PlayerPrefs.SetInt("cristaisLaranjas", 0);
+        PlayerPrefs.SetInt("consumables",0);
     }
 
 }
