@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Player : Caractere
 {
-    public Inventario inventarioPrefab; // referência ao objeto prefab criado do inventário
-    Inventario inventario;
-    public HealthBar healthBarPrefab; // referência ao objeto prefab criado da HealthBar
+    public Inventario inventarioPrefab; // referï¿½ncia ao objeto prefab criado do inventï¿½rio
+    
+    [HideInInspector]
+    public Inventario inventario;
+    public HealthBar healthBarPrefab; // referï¿½ncia ao objeto prefab criado da HealthBar
     HealthBar healthBar;
 
-    public PontosDano pontosDano; // tem o valor da "saúde" do player
+    public PontosDano pontosDano; // tem o valor da "saï¿½de" do player
+
+    private AudioSource audioSource; // audio source para tocar a mÃºsica do tiro
+    public AudioClip audioClip; // audio do tiro
 
     private void Start()
     {
@@ -17,12 +22,16 @@ public class Player : Caractere
         pontosDano.valor = inicioPontosDano;
         healthBar = Instantiate(healthBarPrefab);
         healthBar.caractere = this;
+
+        audioSource = gameObject.AddComponent<AudioSource>(); // pegando o audio source na hierarquia
     }
 
     public override IEnumerator DanoCaractere(int dano, float intervalo)
     {
         while (true)
         {
+            audioSource.PlayOneShot(audioClip);
+
             StartCoroutine(FlickerCaractere());
             pontosDano.valor = pontosDano.valor - dano;
 
@@ -74,8 +83,11 @@ public class Player : Caractere
                         // DeveDesaparecer = true;
                         DeveDesaparecer = inventario.AddItem(DanoObjeto);
                         break;
+                    case Item.TipoItem.CRISTAL:
+                        DeveDesaparecer = inventario.AddItem(DanoObjeto);
+                        break;
                     case Item.TipoItem.HEALTH:
-                        DeveDesaparecer = AjustePontosDano(DanoObjeto.quantidade);
+                        DeveDesaparecer = AjustePontosDano(DanoObjeto, DanoObjeto.quantidade);
                         break;
                     default:
                         break;
@@ -89,12 +101,17 @@ public class Player : Caractere
         }
     }
 
-    public bool AjustePontosDano(int quantidade)
+    public bool AjustePontosDano(Item item, int quantidade)
     {
         if (pontosDano.valor < MaxPontosDano)
         {
             pontosDano.valor = pontosDano.valor + quantidade;
-            print("Ajustando PD por: " + quantidade + ". Novo Valor = " + pontosDano.valor);
+            //print("Ajustando PD por: " + quantidade + ". Novo Valor = " + pontosDano.valor);
+
+            // se o som do item nÃ£o for nulo, execute
+            if(item.audioClip != null)
+                inventario.audioSource.PlayOneShot(item.audioClip);
+
             return true;
         }
         else

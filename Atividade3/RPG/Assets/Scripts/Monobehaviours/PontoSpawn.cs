@@ -14,6 +14,13 @@ public class PontoSpawn : MonoBehaviour
         {
             InvokeRepeating("SpawnO", 0.0f, intervaloRepeticao);
         }
+        else if (intervaloRepeticao == 0)
+        {
+            if (prefabParaSpawn.gameObject.CompareTag("Inimigo"))
+            {
+                Invoke("SpawnO", 0.0f);
+            }
+        }
     }
 
     public GameObject SpawnO()

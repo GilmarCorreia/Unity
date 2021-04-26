@@ -6,10 +6,13 @@ using UnityEngine;
 public class Armas : MonoBehaviour
 {
 
-    public GameObject municaoPrefab;         // armazena o prefab da Munição
-    static List<GameObject> municaoPiscina;  // Pool de munição
+    public GameObject municaoPrefab;         // armazena o prefab da Muniï¿½ï¿½o
+    static List<GameObject> municaoPiscina;  // Pool de muniï¿½ï¿½o
     public int tamanhoPiscina;               // Tamanho da Piscina
     public float velocidadeArma;     // velocidade da municao
+
+    private AudioSource audioSource; // audio source para tocar a mÃºsica do tiro
+    public AudioClip audioClip; // audio do tiro
 
     bool atirando;
     [HideInInspector]
@@ -42,6 +45,8 @@ public class Armas : MonoBehaviour
 
         slopePositivo = PegaSlope(abaixoEsquerda, acimaDireita);
         slopeNegativo = PegaSlope(acimaEsquerda, abaixoDireita);
+
+        audioSource = gameObject.AddComponent<AudioSource>(); // pegando o audio source na hierarquia
     }
 
     bool AcimaSlopePositivo(Vector2 posicaoEntrada)
@@ -169,6 +174,8 @@ public class Armas : MonoBehaviour
 
     void DisparaMunicao()
     {
+        audioSource.PlayOneShot(audioClip);
+
         Vector3 posicaoMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         GameObject municao = SpawnMunicao(transform.position);
 

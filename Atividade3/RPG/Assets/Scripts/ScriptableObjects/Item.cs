@@ -10,6 +10,7 @@ public class Item : ScriptableObject
     public Sprite sprite;
     public int quantidade;
     public bool empilhavel;
+    public AudioClip audioClip; // audio do coletável
 
     public enum TipoItem
     {

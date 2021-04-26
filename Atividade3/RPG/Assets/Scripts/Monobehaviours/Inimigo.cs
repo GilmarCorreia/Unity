@@ -5,15 +5,17 @@ using UnityEngine;
 public class Inimigo : Caractere
 {
 
-    float pontosVida; //equivalente à saude do inimigo
+    float pontosVida; //equivalente ï¿½ saude do inimigo
     public int forcaDano; // poder de dano
+    private AudioSource audioSource; // audio source para tocar a mÃºsica do tiro
+    public AudioClip audioClip; // audio do tiro
 
     Coroutine danoCoroutine;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = gameObject.AddComponent<AudioSource>(); // pegando o audio source na hierarquia
     }
 
     private void OnEnable()
@@ -51,6 +53,7 @@ public class Inimigo : Caractere
     {
         while (true)
         {
+            audioSource.PlayOneShot(audioClip);
             StartCoroutine(FlickerCaractere());
             pontosVida = pontosVida - dano;
 

@@ -16,4 +16,5 @@ MonoBehaviour:
   sprite: {fileID: -6156820157840756319, guid: 25db48f673baae646b623b11f19f65e1, type: 3}
   quantidade: 1
   empilhavel: 1
+  audioClip: {fileID: 8300000, guid: bdcae7702648aa043b079b146d1b4ebb, type: 3}
   tipoItem: 1

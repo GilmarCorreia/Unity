@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 9050732678124167366}
   - component: {fileID: 9050732678124167361}
   - component: {fileID: 9050732678124167360}
-  - component: {fileID: 9050732678124167363}
+  - component: {fileID: 6044898912348137014}
   m_Layer: 0
   m_Name: CrystalBlue
-  m_TagString: Untagged
+  m_TagString: Coletavel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,8 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 7be8201bf1fbfba40bd67ca60eedbf5e, type: 2}
---- !u!70 &9050732678124167363
-CapsuleCollider2D:
+--- !u!58 &6044898912348137014
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130,6 +130,6 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0010970011, y: 0.000000014901161}
-  m_Size: {x: 0.20740007, y: 0.32554933}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.17777778
