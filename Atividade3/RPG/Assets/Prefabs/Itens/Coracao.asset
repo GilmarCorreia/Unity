@@ -17,4 +17,4 @@ MonoBehaviour:
   quantidade: 1
   empilhavel: 0
   audioClip: {fileID: 8300000, guid: 623d26a613eff064b969537adc6efffe, type: 3}
-  tipoItem: 2
+  tipoItem: 7

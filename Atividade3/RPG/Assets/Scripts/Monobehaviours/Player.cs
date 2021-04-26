@@ -83,7 +83,16 @@ public class Player : Caractere
                         // DeveDesaparecer = true;
                         DeveDesaparecer = inventario.AddItem(DanoObjeto);
                         break;
-                    case Item.TipoItem.CRISTAL:
+                    case Item.TipoItem.CRISTAL_AZUL:
+                        DeveDesaparecer = inventario.AddItem(DanoObjeto);
+                        break;
+                    case Item.TipoItem.CRISTAL_ROSA:
+                        DeveDesaparecer = inventario.AddItem(DanoObjeto);
+                        break;
+                    case Item.TipoItem.CRISTAL_LARANJA:
+                        DeveDesaparecer = inventario.AddItem(DanoObjeto);
+                        break;
+                    case Item.TipoItem.CRISTAL_PRETO:
                         DeveDesaparecer = inventario.AddItem(DanoObjeto);
                         break;
                     case Item.TipoItem.HEALTH:

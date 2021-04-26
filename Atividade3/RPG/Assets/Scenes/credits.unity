@@ -428,7 +428,14 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Nome: Gilmar Correia Jeronimo\nRA: 11014515\n\nNPCs:\n\nhttps://solaarnoble.itch.io/free-npcs\n\nColet\xE1veis:\n\nhttps://opengameart.org/content/rotating-crystal-animation-8-step\n\nEfeitos
-    sonoros:\n\nhttps://mixkit.co/free-sound-effects/game/"
+    sonoros:\n\nhttps://mixkit.co/free-sound-effects/game/\n\nM\xFAsicas:\n\nMonkeys
+    Spinning Monkeys Kevin MacLeod (incompetech.com)\r\nLicensed under Creative Commons:
+    By Attribution 3.0 License\r\nhttp://creativecommons.org/licenses/by/3.0/\r\nMusic
+    promoted by https://www.chosic.com/\n\nIce Cream with You\nLicensed under Creative
+    Commons: By Attribution 3.0 License\r\nhttp://creativecommons.org/licenses/by/3.0/\r\nMusic
+    promoted by https://www.chosic.com/\n\nShopping List\nLicensed under Creative
+    Commons: By Attribution 3.0 License\r\nhttp://creativecommons.org/licenses/by/3.0/\r\nMusic
+    promoted by https://www.chosic.com/"
 --- !u!222 &355290147
 CanvasRenderer:
   m_ObjectHideFlags: 0

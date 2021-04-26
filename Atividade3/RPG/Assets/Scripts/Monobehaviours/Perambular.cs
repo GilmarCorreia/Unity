@@ -8,12 +8,12 @@ using UnityEngine;
 public class Perambular : MonoBehaviour
 {
 
-    public float velocidadePerseguicao; // Velocidade do "Inimigo" na área de Spot
+    public float velocidadePerseguicao; // Velocidade do "Inimigo" na ï¿½rea de Spot
     public float velocidadePerambular;  // velocidade do "Inimigo" passeando
-    float velocidadeCorrente;           // velocidade do "Inimigo" atribuída
+    float velocidadeCorrente;           // velocidade do "Inimigo" atribuï¿½da
 
     public float intervaloMudancaDirecao; // Tempo para alterar direcao
-    public bool perseguePlayer;           // Indicador de perseguidor ou não
+    public bool perseguePlayer;           // Indicador de perseguidor ou nï¿½o
 
     Coroutine moverCoroutine;
 
@@ -65,13 +65,15 @@ public class Perambular : MonoBehaviour
     {
         anguloAtual += Random.Range(0, 360);
         anguloAtual = Mathf.Repeat(anguloAtual, 360);
-        posicaoFinal += Vector3ParaAngulo(anguloAtual);
+
+        Vector2 newPos = (rb2D.position + Vector3ParaAngulo(anguloAtual));
+        posicaoFinal =  new Vector3(newPos.x,newPos.y,0);
     }
 
-    Vector3 Vector3ParaAngulo(float anguloEntradaGraus)
+    Vector2 Vector3ParaAngulo(float anguloEntradaGraus)
     {
         float anguloEntradaRadianos = anguloEntradaGraus * Mathf.Deg2Rad;
-        return new Vector3(Mathf.Cos(anguloEntradaRadianos), Mathf.Sin(anguloEntradaRadianos), 0);
+        return new Vector2(Mathf.Cos(anguloEntradaRadianos), Mathf.Sin(anguloEntradaRadianos));
     }
 
     public IEnumerator Mover(Rigidbody2D rBParaMover, float velocidade)

@@ -10,8 +10,12 @@ public class GameManager : MonoBehaviour
 
     public PontoSpawn playerPontoSpawn;
 
+    public string nextScene;
+
     [HideInInspector]
     public int countConsumables = 0;
+
+    
 
     private GameObject player;
 
@@ -31,18 +35,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         SetupScene();
-        CreatePrefabs();
-    }
-
-    void CreatePrefabs(){
-        // Ajusta os prefabs do jogo
-        PlayerPrefs.SetInt("moedas", 0);
-        PlayerPrefs.SetInt("cristaisAzuis", 0);
-        PlayerPrefs.SetInt("cristaisRosas", 0);
-        PlayerPrefs.SetInt("cristaisPretos", 0);
-        PlayerPrefs.SetInt("cristaisVerdes", 0);
-        PlayerPrefs.SetInt("cristaisAmarelos", 0);
-        PlayerPrefs.SetInt("cristaisLaranjas", 0);
     }
 
     public void SetupScene()
@@ -76,7 +68,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        print(countConsumables);
+        //print(countConsumables);
 
     }
 
@@ -89,11 +81,11 @@ public class GameManager : MonoBehaviour
                 itensColetados += item.quantidade;
         }
 
-        print(itensColetados);
+        //print(itensColetados);
         if(itensColetados == countConsumables){
 
             updatePrefabs();
-            SceneManager.LoadScene("Nivel2");
+            SceneManager.LoadScene(nextScene);
         }
     }
 
@@ -108,28 +100,37 @@ public class GameManager : MonoBehaviour
         foreach(GameObject colectable in objs) {
 
             Item item = colectable.GetComponent<Consumable>().item;
+
+            int qtd;
             switch (item.NomeObjeto){
 
                 case "Moeda":
-                    PlayerPrefs.SetInt("moedas", item.quantidade);
+                    qtd = PlayerPrefs.GetInt("moedas");
+                    PlayerPrefs.SetInt("moedas", qtd + item.quantidade);
                     break;
                 case "Cristal Azul":
-                    PlayerPrefs.SetInt("cristaisAzuis", item.quantidade);
+                    qtd = PlayerPrefs.GetInt("cristaisAzuis");
+                    PlayerPrefs.SetInt("cristaisAzuis", qtd + item.quantidade);
                     break;
                 case "Cristal Preto":
-                    PlayerPrefs.SetInt("cristaisPretos", item.quantidade);
+                    qtd = PlayerPrefs.GetInt("cristaisPretos");
+                    PlayerPrefs.SetInt("cristaisPretos", qtd + item.quantidade);
                     break;
                 case "Cristal Verde":
-                    PlayerPrefs.SetInt("cristaisVerdes", item.quantidade);
+                    qtd = PlayerPrefs.GetInt("cristaisVerdes");
+                    PlayerPrefs.SetInt("cristaisVerdes", qtd + item.quantidade);
                     break;
                 case "Cristal Amarelo":
-                    PlayerPrefs.SetInt("cristaisAmarelos", item.quantidade);
+                    qtd = PlayerPrefs.GetInt("cristaisAmarelos");
+                    PlayerPrefs.SetInt("cristaisAmarelos", qtd + item.quantidade);
                     break;
                 case "Cristal Laranja":
-                    PlayerPrefs.SetInt("cristaisLaranjas", item.quantidade);
+                    qtd = PlayerPrefs.GetInt("cristaisLaranjas");
+                    PlayerPrefs.SetInt("cristaisLaranjas", qtd + item.quantidade);
                     break;
                 case "Cristal Rosa":
-                    PlayerPrefs.SetInt("cristaisRosas", item.quantidade);
+                    qtd = PlayerPrefs.GetInt("cristaisRosas");
+                    PlayerPrefs.SetInt("cristaisRosas", qtd + item.quantidade);
                     break;
 
             }
